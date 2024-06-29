@@ -18,10 +18,14 @@ public class LuaFileActionFunction implements IActionFunction{
         Globals globals = LuaUtil.getLuaVM();
         globals.set("context", CoerceJavaToLua.coerce(context));
         System.out.printf("[LuaFileActionFunction] %s\n", "actions/"+file);
-        LuaValue result = globals.loadfile("actions/"+file).call();
-        if(result.isstring()){
-            String string =  result.checkjstring();
-            return ActionStatus.valueOf(string.toUpperCase());
+        try {
+            LuaValue result = globals.loadfile("actions/" + file).call();
+            if (result.isstring()) {
+                String string = result.checkjstring();
+                return ActionStatus.valueOf(string.toUpperCase());
+            }
+        }catch (Exception err){
+            err.printStackTrace();
         }
         return ActionStatus.UNKNOWN;
     }

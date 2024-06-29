@@ -1,0 +1,24 @@
+selector:root
+    sequence:die
+        condition:is not alive
+        action:die
+    sequence:flee
+        condition:has critical health
+        action:flee
+    sequence:has enemy
+        condition:has enemy
+        selector:
+            sequence:has no ammo
+                condition:has no ammo
+                action:reload
+            sequence:can shoot enemy
+                condition:can shoot enemy
+                action:shoot
+            action:pursue
+    sequence:has move position
+        condition:has move position
+        action:move to position
+    sequence:50/50 chance
+        condition:50/50 chance
+        action: random move
+    action: idle

@@ -5,5 +5,5 @@ print("Blackboard", context:getBlackboard())
 local count = context:getBlackboard():get("Count") or 0
 count = count + 1
 context:getBlackboard():set("Count", count)
-context:getBlackboard():addLuaSource("Name", function() return {1, "I'm "..count} end, 10000)
+context:getBlackboard():addLuaSource("Name", function(ctx) return {1, "I'm "..count} end, 10000)
 

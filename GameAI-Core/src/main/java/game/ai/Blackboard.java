@@ -2,6 +2,7 @@ package game.ai;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.luaj.vm2.LuaValue;
 
 import java.util.*;
 
@@ -19,6 +20,16 @@ public class Blackboard implements IBlackboard{
     public Blackboard addSource(String attributeName, KnowledgeSource source){
         List<KnowledgeSource> attributeSources = sources.getOrDefault(attributeName, new ArrayList<>());
         attributeSources.add(source);
+        sources.put(attributeName, attributeSources);
+        return this;
+    }
+
+    public Blackboard addLuaSource(String attributeName, LuaValue evaluator, Long updateFrequencyInMs)
+    {
+        KnowledgeSource knowledgeSource = new KnowledgeSource();
+        knowledgeSource.setEvaluator(new LuaKnowledgeSourceEvaluator(evaluator));
+        knowledgeSource.setUpdateFrequencyInMs(updateFrequencyInMs);
+        addSource(attributeName, knowledgeSource);
         return this;
     }
 

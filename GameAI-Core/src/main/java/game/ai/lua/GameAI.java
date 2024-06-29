@@ -26,7 +26,7 @@ public class GameAI extends TwoArgFunction {
                 int randomValue = random.nextInt(luaValue.toint());
                 return LuaValue.valueOf(randomValue);
             }else{
-                int randomValue = random.nextInt(luaValue.toint());
+                int randomValue = random.nextInt();
                 return LuaValue.valueOf(randomValue);
             }
         }

@@ -25,7 +25,9 @@ public class LuaFileActionFunction implements IActionFunction{
                 return ActionStatus.valueOf(string.toUpperCase());
             }
         }catch (Exception err){
-            err.printStackTrace();
+            if(!err.getMessage().startsWith("load ")){
+                err.printStackTrace();
+            }
         }
         return ActionStatus.UNKNOWN;
     }

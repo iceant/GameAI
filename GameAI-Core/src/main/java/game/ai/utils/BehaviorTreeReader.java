@@ -23,18 +23,17 @@ public class BehaviorTreeReader {
 
     public static NodeInfo parseNodeInfo(String line){
         NodeInfo nodeInfo = new NodeInfo();
-        StringTokenizer stringTokenizer = new StringTokenizer(line, ":");
         int index = line.indexOf(":");
         String type = "";
         String name = "";
         if(index==-1){
-            type = line;
+            type = line.trim();
         }else{
             type = line.substring(0, index).trim();
             name = line.substring(index+1).trim();
         }
-
-        int level = StringUtil.tokenCount(line.replaceAll(" {4}", "\t"), '\t');
+        String token_line = line.replaceAll("\\s{4}", "\t").replaceAll("\\s+$", "");
+        int level = StringUtil.tokenCount(token_line, '\t');
         if("selector".equalsIgnoreCase(type)){
             return nodeInfo.setType(BehaviorTreeNodeType.Selector).setName(name).setLevel(level);
         }else if("sequence".equalsIgnoreCase(type)){
@@ -68,7 +67,7 @@ public class BehaviorTreeReader {
                     currentNode = BehaviorTreeNode.newConditionNode(currentNodeInfo.getName(),
                             new Evaluator(currentNodeInfo.getName(), new LuaFileEvaluator(currentNodeInfo.getFormatedName()+".lua"), null));
                 }else if(currentNodeInfo.type==BehaviorTreeNodeType.Action){
-                    currentNode = BehaviorTreeNode.newActionNode(currentNodeInfo.getName(), new Action(currentNode.getName()
+                    currentNode = BehaviorTreeNode.newActionNode(currentNodeInfo.getName(), new Action(currentNodeInfo.getName()
                             , new LuaFileActionFunction(currentNodeInfo.getFormatedName()+"_Initialize.lua")
                             , new LuaFileActionFunction( currentNodeInfo.getFormatedName()+"_Update.lua")
                             , new LuaFileActionFunction(currentNodeInfo.getFormatedName()+"_CleanUp.lua")

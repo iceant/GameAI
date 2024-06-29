@@ -20,8 +20,13 @@ public class LuaFileEvaluator implements IEvaluatorFunction{
     public Integer apply(IEvaluatorContext context) {
         Globals vm = LuaUtil.getLuaVM();
         vm.set("context", CoerceJavaToLua.coerce(context));
-        LuaValue result = vm.loadfile("evaluators/"+file).call();
+        try {
+            LuaValue result = vm.loadfile("evaluators/" + file).call();
         System.out.printf("[LuaFileEvaluator] %s -> %d\n", "evaluators/"+file, result.toint());
-        return result.toint();
+            return result.toint();
+        }catch (Exception err){
+            err.printStackTrace();
+        }
+        return 0;
     }
 }

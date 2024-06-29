@@ -4,6 +4,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.lib.ResourceFinder;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class LuaUtil {
@@ -12,7 +13,8 @@ public class LuaUtil {
         luaVM.finder = new ResourceFinder() {
             @Override
             public InputStream findResource(String s) {
-                return Thread.currentThread().getContextClassLoader().getResourceAsStream(s);
+                InputStream inputStream =  Thread.currentThread().getContextClassLoader().getResourceAsStream(s);
+                return inputStream;
             }
         };
         return luaVM;

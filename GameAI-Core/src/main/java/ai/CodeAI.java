@@ -35,22 +35,32 @@ public class CodeAI extends TwoArgFunction {
         }
     }
 
-    static class list_files extends OneArgFunction {
-        static void listFilesInFolder(String folder, List<File> result){
+    static class list_files extends TwoArgFunction {
+        static void listFilesInFolder(String folder, List<File> result, LuaValue filterFunction){
             File file = Paths.get(folder).toFile();
-            File[] subFiles = file.listFiles();
+            File[] subFiles = file.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    if(filterFunction!=LuaValue.NIL){
+                        LuaValue result = filterFunction.call(CoerceJavaToLua.coerce(pathname));
+                        return result.optboolean(false);
+                    }
+                    return true;
+                }
+            });
             for(File subFile : subFiles){
                 result.add(subFile);
                 if(subFile.isDirectory()){
-                    listFilesInFolder(subFile.getAbsolutePath(), result);
+                    listFilesInFolder(subFile.getAbsolutePath(), result, filterFunction);
                 }
             }
         }
+
         @Override
-        public LuaValue call(LuaValue luaValue) {
-            String folder = luaValue.checkjstring();
+        public LuaValue call(LuaValue path, LuaValue filter) {
+            String folder = path.checkjstring();
             List<File> fileList = new ArrayList<>();
-            listFilesInFolder(folder, fileList);
+            listFilesInFolder(folder, fileList, filter);
             return CoerceJavaToLua.coerce(fileList);
         }
     }

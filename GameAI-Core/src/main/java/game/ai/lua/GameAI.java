@@ -14,6 +14,7 @@ public class GameAI extends TwoArgFunction {
         library.set( "rand", new rand() );
         library.set( "exit", new exit() );
         env.set( "GameAI", library );
+        env.get("package").get("loaded").set("GameAI", library);
         return library;
     }
 

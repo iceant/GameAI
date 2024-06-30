@@ -1,0 +1,32 @@
+sequence: root
+    action: list files
+    action: get file
+    selector: process
+        sequence: folder
+            condition: is folder
+            sequence: folder sequence
+                action: folder handler
+        sequence: controller
+            condition: is controller
+            sequence: controller sequence
+                action: replace tokens
+        sequence: service
+            condition: is service
+            sequence: service sequence
+                action:
+        sequence: entity
+            condition: is entity
+            sequence: entity sequence
+                action:
+        sequence: mybatis mapper
+            condition: is mybatis mapper
+            sequence: mybatis mapper sequence
+                action:
+        sequence: pom xml
+            condition: is pom xml
+            sequence: pom xml sequence
+                action:
+        sequence: vue
+            condition: is vue
+            sequence: vue sequence
+                action:

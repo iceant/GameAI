@@ -6,7 +6,7 @@ local folder = [[M:\Workspace\BJSN]]
 
 local files = blackboard:get("files") or nil
 if(files == nil) then
-    prettyPrint.print("list files in "..folder)
+    print("list files in "..folder)
     files = CodeAI.list_files(folder, function(file) 
             return true
         end);

@@ -19,8 +19,8 @@ public class KnowledgeSource {
 
     public <T> KnowledgeSourceEvaluateResult evaluate(IKnowledgeSourceEvaluateContext context){
         long time = System.currentTimeMillis();
-        long nextUpdateTime = time + updateFrequencyInMs;
-        if(nextUpdateTime > lastUpdateTime){
+        long nextUpdateTime = lastUpdateTime + updateFrequencyInMs;
+        if(nextUpdateTime <= time){
             this.lastUpdateTime = time;
 
             KnowledgeSourceEvaluateResult result = evaluator.evaluate(context);
